@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard | Ikubaru</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-gray-100 min-h-screen p-6">
+    <div class="max-w-5xl mx-auto bg-white shadow-xl rounded-2xl p-8">
+        <h1 class="text-2xl font-bold text-gray-800 mb-6 text-center">🎫 License Manager</h1>
+
+        <!-- Form Tambah License -->
+        <div class="mt-6 p-4 border rounded-lg bg-gray-50 shadow-sm">
+            <h2 class="font-semibold text-lg mb-3 text-gray-800">🎟️ Generate License</h2>
+
+            <div class="flex gap-3 flex-wrap items-center">
+                <input id="license_user" type="text" placeholder="User email or ID"
+                    class="border px-3 py-1 rounded-lg focus:ring-2 focus:ring-blue-400" />
+                <input id="license_days" type="number" value="7"
+                    class="border px-3 py-1 rounded-lg w-24 focus:ring-2 focus:ring-blue-400" />
+                <button id="generate_license" class="bg-blue-600 text-white px-4 py-1 rounded-lg hover:bg-blue-700">
+                    Generate
+                </button>
+                <button id="logout-btn"
+                    class="bg-red-500 hover:bg-red-600 text-white px-6 py-1 rounded-lg font-semibold transition">
+                    Logout
+                </button>
+            </div>
+            <p id="gen_status" class="text-sm mt-3 text-gray-600"></p>
+        </div>
+
+        <!-- Tabel License -->
+        <table class="w-full border-collapse border border-gray-300 text-sm">
+            <thead class="bg-gray-100">
+                <tr>
+                    <th class="border px-3 py-2 text-left">License Key</th>
+                    <th class="border px-3 py-2">Berlaku Sampai</th>
+                    <th class="border px-3 py-2">Status</th>
+                    <th class="border px-3 py-2 text-center">Aksi</th>
+                </tr>
+            </thead>
+            <tbody id="license-table"></tbody>
+        </table>    
+    </div>
+
+    <script type="module" src="js/dashboard.js"></script>
+</body>
+
+</html>

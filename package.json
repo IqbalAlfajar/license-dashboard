@@ -1,0 +1,13 @@
+{
+    "name": "ikubaru-license-dashboard",
+    "version": "1.0.0",
+    "description": "License generator with Fernet encryption",
+    "main": "index.html",
+    "type": "module",
+    "scripts": {
+        "start": "vercel dev"
+    },
+    "dependencies": {
+        "fernet": "^0.3.0"
+    }
+}
