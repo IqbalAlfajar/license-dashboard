@@ -101,6 +101,24 @@ document.addEventListener("DOMContentLoaded", async () => {
         status.className = "text-red-600";
       }
     });
+
+    // --- Logout ---
+    const logoutBtn = document.getElementById("logout-btn")
+    if (logoutBtn) {
+        logoutBtn.addEventListener("click", async () => {
+            const { error } = await supabase.auth.signOut()
+            localStorage.removeItem("supabase_session")
+
+            if (!error) {
+                alert("Logout berhasil!")
+                window.location.href = "index.html"
+            } else {
+                alert("Logout gagal: " + error.message)
+            }
+        })
+    } else {
+        console.warn("⚠️ Logout button not found in DOM.")
+    }
     
     // --- Init ---
     loadLicenses();
