@@ -1,13 +1,14 @@
-{
-    "name": "ikubaru-license-dashboard",
-    "version": "1.0.0",
-    "description": "License generator with Fernet encryption",
-    "main": "index.html",
-    "type": "module",
-    "scripts": {
-        "start": "vercel dev"
-    },
-    "dependencies": {
-        "fernet": "^0.3.0"
+    {
+        "name": "ikubaru-license-dashboard",
+        "version": "1.0.0",
+        "description": "License generator with Fernet encryption",
+        "main": "index.html",
+        "type": "module",
+        "scripts": {
+            "start": "vercel dev"
+        },
+        "dependencies": {
+            "fernet": "^0.3.0",
+            "@supabase/supabase-js": "^2.43.1"
+        }
     }
-}
