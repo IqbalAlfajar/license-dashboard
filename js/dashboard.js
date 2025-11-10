@@ -76,7 +76,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
       });
     });
-
+    }
     
     // --- Generate License ---
     document.getElementById("generate_license").addEventListener("click", async () => {
