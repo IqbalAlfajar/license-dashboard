@@ -56,16 +56,27 @@ document.addEventListener("DOMContentLoaded", async () => {
           window.URL.revokeObjectURL(url);
         });
       });
+
+    // Tombol Hapus
+    document.querySelectorAll('.delete-btn').forEach(btn => {
+      btn.addEventListener('click', async () => {
+        const id = btn.dataset.id;
+        if (!id) return alert("❌ ID license tidak ditemukan");
     
-      // Tombol Hapus
-      document.querySelectorAll('.delete-btn').forEach(btn => {
-        btn.addEventListener('click', async () => {
-          if (!confirm("Yakin ingin hapus license ini?")) return;
-          await supabase.from('licenses').delete().eq('id', btn.dataset.id);
-          loadLicenses();
-        });
+        if (confirm("Yakin ingin hapus license ini?")) {
+          const { error } = await supabase.from('licenses').delete().eq('id', id);
+    
+          if (error) {
+            alert("Gagal menghapus license: " + error.message);
+            console.error(error);
+          } else {
+            alert("✅ License berhasil dihapus!");
+            await loadLicenses(); // tambahkan await di sini
+          }
+        }
       });
-    }
+    });
+
     
     // --- Generate License ---
     document.getElementById("generate_license").addEventListener("click", async () => {
