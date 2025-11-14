@@ -75,7 +75,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         if (!id) return alert("❌ ID license tidak ditemukan");
 
         if (confirm("Yakin ingin hapus license ini?")) {
-          const { error } = await supabase.from('licenses').delete().eq('id', uuid);
+          const { error } = await supabase.from('licenses').delete().eq('id', id);
 
           if (error) {
             alert("Gagal menghapus license: " + error.message);
