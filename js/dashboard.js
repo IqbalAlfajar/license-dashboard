@@ -2,7 +2,7 @@ import { supabase } from './app.js'
 
 document.addEventListener("DOMContentLoaded", async () => {
 
-  // --- Fungsi memuat semua license dari database ---
+  // --- Load licenses ---
   async function loadLicenses() {
     const table = document.getElementById("license-table");
     table.innerHTML = `<tr><td colspan="5" class="text-center py-4">Loading...</td></tr>`;
@@ -23,31 +23,36 @@ document.addEventListener("DOMContentLoaded", async () => {
       return;
     }
 
-    // Isi tabel dengan data dari Supabase
     table.innerHTML = data.map(l => `
       <tr>
         <td class="border px-3 py-2 font-mono">${l.user_email}</td>
         <td class="border px-3 py-2">${new Date(l.valid_until).toLocaleDateString()}</td>
         <td class="border px-3 py-2 text-center">${l.status}</td>
         <td class="border px-3 py-2 text-center">
-          <button data-id="${l.id}" class="download-btn bg-blue-500 text-white px-3 py-1 rounded text-xs hover:bg-blue-600">
+
+          <button data-id="${l.uuid}" 
+            class="download-btn bg-blue-500 text-white px-3 py-1 rounded text-xs hover:bg-blue-600">
             Download
           </button>
-          <button data-id="${l.id}" class="delete-btn bg-red-500 text-white px-3 py-1 rounded text-xs hover:bg-red-600">
+
+          <button data-id="${l.uuid}" 
+            class="delete-btn bg-red-500 text-white px-3 py-1 rounded text-xs hover:bg-red-600">
             Hapus
           </button>
+
         </td>
       </tr>
     `).join('');
 
-    // --- Tombol Download ---
+    // --- Download license ---
     document.querySelectorAll('.download-btn').forEach(btn => {
       btn.addEventListener('click', async () => {
         const id = btn.dataset.id;
+
         const { data, error } = await supabase
           .from('licenses')
           .select('license_key, user_email')
-          .eq('id', id)
+          .eq('uuid', id)
           .single();
 
         if (error) {
@@ -66,23 +71,26 @@ document.addEventListener("DOMContentLoaded", async () => {
       });
     });
 
-    // --- Tombol Hapus ---
+    // --- Delete license ---
     document.querySelectorAll('.delete-btn').forEach(btn => {
       btn.addEventListener('click', async () => {
         const id = btn.dataset.id;
-        console.log("Menghapus license ID:", id);
+        console.log("Menghapus license UUID:", id);
 
-        if (!id) return alert("❌ ID license tidak ditemukan");
+        if (!id) return alert("❌ UUID license tidak ditemukan");
 
         if (confirm("Yakin ingin hapus license ini?")) {
-          const { error } = await supabase.from('licenses').delete().eq('id', id);
+          const { error } = await supabase
+            .from('licenses')
+            .delete()
+            .eq('uuid', id);
 
           if (error) {
             alert("Gagal menghapus license: " + error.message);
             console.error(error);
           } else {
             alert("✅ License berhasil dihapus!");
-            await loadLicenses(); // reload tabel
+            await loadLicenses();
           }
         }
       });
@@ -110,8 +118,8 @@ document.addEventListener("DOMContentLoaded", async () => {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ user, expire_days: days }),
       });
-      const data = await res.json();
 
+      const data = await res.json();
       if (!res.ok) throw new Error(data.error || "Gagal generate license");
 
       status.textContent = "✅ License berhasil dibuat!";
@@ -138,10 +146,8 @@ document.addEventListener("DOMContentLoaded", async () => {
         alert("Logout gagal: " + error.message);
       }
     });
-  } else {
-    console.warn("⚠️ Logout button not found in DOM.");
   }
 
-  // --- Jalankan saat halaman dibuka ---
+  // Init
   loadLicenses();
 });
